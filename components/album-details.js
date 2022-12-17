@@ -61,7 +61,14 @@ const AlbumDetails = ({ album }) => {
       {reviewsLoading ? (
         <CircularProgress />
       ) : (
-        <Box sx={{ display: "flex", flexWrap: "wrap", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {reviews.map((review, idx) => (
             <ReviewCardInfo review={review} key={idx} />
           ))}
