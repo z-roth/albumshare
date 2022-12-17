@@ -1,4 +1,4 @@
-# Albumshare
+# Albumshare - Final Project for CS4550
 ## Share your favorite albums!
 
 ### UML Diagram:
