@@ -8,24 +8,30 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState, useEffect, useContext } from "react";
-import { login } from "../services/users-service.js";
+import { useState, useContext } from "react";
+import { signup } from "../services/users-service.js";
 import { useRouter } from "next/router";
 import { UserContext } from "./_app.js";
 
-const Login = () => {
-  const [loginUser, setLoginUser] = useState({});
+const Register = () => {
+  const [newUser, setNewUser] = useState({ isBandAccount: false });
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-  const userContext = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(loginUser)
+    if (newUser.password != confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    signup(newUser)
       .then((user) => {
-        userContext.setUser(user);
+        setUser(user);
         router.push("/profile");
       })
-      .catch((e) => alert("Failed to log in with provided credentials."));
+      .catch((e) => alert(e));
   };
 
   return (
@@ -33,6 +39,7 @@ const Login = () => {
       <Box
         component="form"
         sx={{
+          
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -42,14 +49,14 @@ const Login = () => {
         onSubmit={(e) => handleSubmit(e)}
       >
         <Typography variant="h3" sx={{ mb: 2 }}>
-          Log In
+          Sign Up
         </Typography>
         <FormControl variant="outlined">
           <InputLabel>Username</InputLabel>
           <OutlinedInput
             type="text"
             onChange={(e) =>
-              setLoginUser({ ...loginUser, username: e.target.value })
+              setNewUser({ ...newUser, username: e.target.value })
             }
             label="Username"
             required
@@ -60,12 +67,31 @@ const Login = () => {
           <OutlinedInput
             type="password"
             onChange={(e) =>
-              setLoginUser({ ...loginUser, password: e.target.value })
+              setNewUser({ ...newUser, password: e.target.value })
             }
             label="Password"
             required
           />
         </FormControl>
+        <FormControl variant="outlined">
+          <InputLabel>Confirm Password</InputLabel>
+          <OutlinedInput
+            type="password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            label="Confirm Password"
+            required
+          />
+        </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              onChange={() =>
+                setNewUser({ ...newUser, isBandAccount: !newUser.isBandAccount })
+              }
+            />
+          }
+          label="Band Account?"
+        />
         <Button type="submit" variant="contained">
           Submit
         </Button>
@@ -74,4 +100,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

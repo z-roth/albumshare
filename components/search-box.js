@@ -10,12 +10,12 @@ import { useState } from "react";
 
 const SearchBar = () => {
   const router = useRouter();
-  const [searchString, setSearchString] = useState("");
+  const [criteria, setcriteria] = useState("");
 
   const handleSubmit = () => {
-    if (searchString != "") {
-      router.push({ pathname: "/search", query: { searchString } });
-      setSearchString("");
+    if (criteria != "") {
+      router.push({ pathname: "/search", query: { criteria } });
+      setcriteria("");
     }
   };
 
@@ -33,13 +33,12 @@ const SearchBar = () => {
         }
         label="Search for an album..."
         onKeyPress={(ev) => {
-          console.log(`Pressed keyCode ${ev.key}`);
           if (ev.key === "Enter") {
             handleSubmit();
             ev.preventDefault();
           }
         }}
-        onChange={(e) => setSearchString(e.target.value)}
+        onChange={(e) => setcriteria(e.target.value)}
       ></OutlinedInput>
     </FormControl>
   );

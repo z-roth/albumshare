@@ -1,8 +1,8 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import Navbar from "../components/navbar";
 import { useEffect, useState } from "react";
-import { getAlbums } from "../api/album-api";
+import { getAlbums } from "../services/albums-service";
 import SearchResults from "../components/search-results";
 
 const Search = () => {
@@ -11,15 +11,15 @@ const Search = () => {
   const [albums, setAlbums] = useState();
 
   useEffect(() => {
-    if (router.isReady) {
-      getAlbums(router.query.searchString)
+    if (router.isReady && router.query.criteria) {
+      getAlbums(router.query.criteria)
         .then((data) => {
           setAlbums(data);
           setLoading(false);
         })
         .catch((err) => alert(err));
     }
-  }, [router.query.searchString]);
+  }, [router.query.criteria, router.isReady]);
 
   return (
     <Box>
@@ -27,12 +27,13 @@ const Search = () => {
       <Box sx={{ p: 4, textAlign: "center" }}>
         <Box>
           {!loading && router.isReady ? (
-            <SearchResults
-              searchString={router.query.searchString}
-              albums={albums}
-            />
+            <SearchResults criteria={router.query.criteria} albums={albums} />
+          ) : router.query.criteria ? (
+            <CircularProgress />
           ) : (
-            <Typography variant="h4">Loading...</Typography>
+            <Typography variant="h4">
+              Search for an album with the above search box.
+            </Typography>
           )}
         </Box>
       </Box>

@@ -1,19 +1,16 @@
 import { Typography, Box, Grid } from "@mui/material";
-import AlbumListItem from "./album-list-item";
+import AlbumListItem from "./album-card.js";
 import Link from "next/link";
 
-const SearchResults = ({ searchString, albums }) => {
+const SearchResults = ({ criteria, albums }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      
-        <Typography variant="h4">{`Search results for "${searchString}"`}</Typography>
-        <Grid container alignItems="center" justifyContent="center">
-          {albums.map((album, idx) => (
-            // <p>{`${album}`}</p>
-            <AlbumListItem album={album} key={idx} />
-          ))}
-        </Grid>
-      
+      <Typography variant="h4">{`Search results for "${criteria}"`}</Typography>
+      <Grid container alignItems="center" justifyContent="center">
+        {albums.map((album, idx) => (
+          <AlbumListItem album={album} key={idx} />
+        ))}
+      </Grid>
     </Box>
   );
 };
